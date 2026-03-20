@@ -1,0 +1,22 @@
+{
+  "name": "Eid Mubarak Wish",
+  "short_name": "Eid Wish",
+  "description": "Send personalized Eid greetings with beautiful animations.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a2a1a",
+  "theme_color": "#c5a059",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

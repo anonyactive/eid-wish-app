@@ -30,6 +30,12 @@ const dictionary = {
 let currentLang = 'en';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('Service Worker Registered'))
+      .catch(err => console.error('Service Worker Registry Failed', err));
+  }
   const urlParams = new URLSearchParams(window.location.search);
   const nameParam = urlParams.get('name') || urlParams.get('n');
   const fromParam = urlParams.get('from') || urlParams.get('f');
