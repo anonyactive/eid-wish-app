@@ -1,0 +1,436 @@
+:root {
+  --primary-color: #0d3b2e;
+  --secondary-color: #f7d165;
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --accent-glow: 0 0 20px rgba(247, 209, 101, 0.3);
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  margin-top: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.view {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Language Toggle */
+.lang-toggle-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+}
+
+.lang-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  width: auto;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: none;
+}
+.lang-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(0);
+}
+
+/* Urdu Mode (RTL) */
+[dir="rtl"] {
+  direction: rtl;
+  font-family: 'Noto Nastaliq Urdu', serif;
+}
+
+[dir="rtl"] .title, 
+[dir="rtl"] .subtitle, 
+[dir="rtl"] .greeting-prefix, 
+[dir="rtl"] .recipient-name, 
+[dir="rtl"] .greeting-message,
+[dir="rtl"] .sender-label,
+[dir="rtl"] .sender-name,
+[dir="rtl"] input[type="text"],
+[dir="rtl"] button,
+[dir="rtl"] .site-footer p {
+  font-family: 'Noto Nastaliq Urdu', serif;
+}
+
+[dir="rtl"] .title { font-size: 2.8rem; line-height: 1.8; margin-bottom: 0; }
+[dir="rtl"] .greeting-prefix { font-size: 2.5rem; line-height: 1.5; margin-bottom: 1rem; }
+[dir="rtl"] .recipient-name { font-size: 3.5rem; line-height: 1.8; }
+[dir="rtl"] .greeting-message { font-size: 1.4rem; line-height: 2.2; }
+[dir="rtl"] .lang-btn { font-family: 'Outfit', serif; direction: ltr; } 
+[dir="rtl"] .sender-name { font-size: 2.2rem; line-height: 1.8; }
+[dir="rtl"] .sender-label { font-size: 1.2rem; }
+[dir="rtl"] .site-footer p { font-size: 1.1rem; }
+
+/* Generator View Styles */
+.title {
+  font-family: var(--font-heading);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.highlight {
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid var(--card-border);
+  background: rgba(0,0,0,0.2);
+  color: var(--text-main);
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 15px rgba(247, 209, 101, 0.2);
+  background: rgba(0,0,0,0.4);
+}
+
+input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+button {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  background: var(--secondary-color);
+  color: #000;
+  font-weight: 600;
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--accent-glow);
+  background: #ffdb78;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+#share-box {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--card-border);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+#share-box p {
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.link-display {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+#generated-link {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  background: rgba(0,0,0,0.3);
+  direction: ltr; /* Always LTR for URLs */
+  text-align: left;
+}
+
+#copy-btn, #native-share-btn {
+  width: auto;
+  padding: 0.8rem;
+  border-radius: 12px;
+}
+
+/* Wish Card View Styles */
+.wish-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 2rem;
+  border: 1px solid var(--card-border);
+  padding: 3rem 2rem 2rem 2rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.wish-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at center 0%, rgba(247, 209, 101, 0.15), transparent 60%);
+  pointer-events: none;
+}
+
+.decor-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  height: 80px;
+}
+
+.lantern-left, .lantern-right {
+  width: 45px;
+  height: 45px;
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 5px 15px rgba(247, 209, 101, 0.4));
+}
+
+.lantern-left { animation-delay: 0s; }
+.lantern-right { animation-delay: 2s; }
+
+.crescent-moon {
+  width: 70px;
+  height: 70px;
+  filter: drop-shadow(var(--accent-glow));
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(10px) rotate(2deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(247, 209, 101, 0.2)); }
+  50% { filter: drop-shadow(0 0 30px rgba(247, 209, 101, 0.6)); }
+}
+
+.greeting-prefix {
+  font-family: var(--font-heading);
+  color: var(--secondary-color);
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.recipient-name {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  background: linear-gradient(to right, #fff, var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  word-wrap: break-word;
+}
+
+.greeting-message {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
+}
+
+#sender-container {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(255,255,255,0.2);
+}
+
+.sender-label {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sender-name {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: #fff;
+  background: linear-gradient(to right, var(--secondary-color), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Footer Section */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem;
+  width: 100%;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 10;
+  margin-top: auto;
+}
+
+.site-footer p { 
+  font-family: var(--font-body); 
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--secondary-color);
+  color: #000;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  z-index: 100;
+  transition: opacity 0.3s ease;
+}
+
+/* Sparkles Decoration */
+.sparkle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+/* Floating Celebration Emojis */
+.floating-emoji {
+  position: fixed;
+  top: -50px;
+  z-index: 1000;
+  pointer-events: none;
+  animation: floatDown linear forwards;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+  text-shadow: none;
+}
+
+@keyframes floatDown {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; transform: translateY(10vh); }
+  80% { opacity: 1; transform: translateY(80vh); }
+  100% { transform: translateY(130vh); opacity: 0; }
+}
+
+/* Envelope Overlay */
+#envelope-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-gradient);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#envelope-overlay.hidden-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50px);
+}
+
+.open-envelope-btn {
+  background: var(--secondary-color);
+  color: #000;
+  border: none;
+  font-family: var(--font-heading);
+  padding: 1.5rem 3rem;
+  font-size: 1.8rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(247, 209, 101, 0.5);
+  transition: all 0.3s ease;
+  animation: pulseBtn 2s infinite;
+}
+
+@keyframes pulseBtn {
+  0% { transform: scale(1); box-shadow: 0 0 20px rgba(247, 209, 101, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(247, 209, 101, 0.8); }
+  100% { transform: scale(1); box-shadow: 0 0 20px rgba(247, 209, 101, 0.5); }
+}
