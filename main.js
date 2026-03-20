@@ -131,6 +131,20 @@ function updateCardPreview(name, fromName) {
   // Update Document Title
   document.title = `${eidMubarakText} ${displayFriend}`;
 
+  // Update Meta Tags for Social Sharing (WhatsApp previews)
+  const ogTitle = document.getElementById('og-title');
+  const ogDesc = document.getElementById('og-description');
+  const metaDesc = document.querySelector('meta[name="description"]');
+
+  if (ogTitle) ogTitle.setAttribute('content', document.title);
+
+  const desc = fromName 
+    ? `A special Eid greeting from ${fromName} for ${displayFriend}!`
+    : `A special Eid greeting for ${displayFriend}!`;
+
+  if (ogDesc) ogDesc.setAttribute('content', desc);
+  if (metaDesc) metaDesc.setAttribute('content', desc);
+
   if (fromName && fromName !== '') {
     senderNameEl.textContent = fromName;
     senderContainer.classList.remove('hidden');
@@ -147,7 +161,13 @@ function setupGeneratorLogic() {
   const generatedLinkInput = document.getElementById('generated-link');
   const copyBtn = document.getElementById('copy-btn');
   const nativeShareBtn = document.getElementById('native-share-btn');
+  const whatsappShareBtn = document.getElementById('whatsapp-share-btn');
   const toast = document.getElementById('toast');
+
+  whatsappShareBtn.addEventListener('click', () => {
+    const text = encodeURIComponent(`${document.title}\n\n${generatedLinkInput.value}`);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  });
 
   if (navigator.share) {
     nativeShareBtn.classList.remove('hidden');

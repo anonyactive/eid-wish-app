@@ -213,10 +213,21 @@ button:active {
   text-align: left;
 }
 
-#copy-btn, #native-share-btn {
+#copy-btn, #native-share-btn, #whatsapp-share-btn {
   width: auto;
   padding: 0.8rem;
   border-radius: 12px;
+}
+
+#whatsapp-share-btn {
+  background: #25D366; /* WhatsApp Green */
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+#whatsapp-share-btn:hover {
+  background: #128C7E;
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
 }
 
 /* Wish Card View Styles */
