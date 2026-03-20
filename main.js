@@ -10,7 +10,8 @@ const dictionary = {
     greeting_msg: 'May the guidance and blessings of Allah be with you and your family. Wishing you a joyous and peaceful Eid surrounded by those you love!',
     from_label: 'From:',
     default_friend: 'Friend',
-    open_gift: 'Tap to Open Gift 🎁'
+    open_gift: 'Tap to Open Gift 🎁',
+    share_msg: 'Eid Mubarak, {name}! I created a special Eid wish for you. Check it out here:'
   },
   ur: {
     create_your_own: 'اپنا عید کا پیغام بنائیں',
@@ -23,7 +24,8 @@ const dictionary = {
     greeting_msg: 'بعد رمضان کے عید ہوتی ہے،<br/>رب کی رحمت مزید ہوتی ہے۔<br/><br/>اللہ آپ کی تمام عبادات قبول فرمائے۔ عید مبارک!',
     from_label: 'منجانب:',
     default_friend: 'دوست',
-    open_gift: 'تحفہ کھولنے کے لیے کلک کریں 🎁'
+    open_gift: 'تحفہ کھولنے کے لیے کلک کریں 🎁',
+    share_msg: 'عید مبارک، {name}! میں نے آپ کے لیے عید کا ایک خاص پیغام بنایا ہے۔ اسے یہاں دیکھیں:'
   }
 };
 
@@ -165,7 +167,10 @@ function setupGeneratorLogic() {
   const toast = document.getElementById('toast');
 
   whatsappShareBtn.addEventListener('click', () => {
-    const text = encodeURIComponent(`${document.title}\n\n${generatedLinkInput.value}`);
+    const name = nameInput.value.trim() || dictionary[currentLang].default_friend;
+    const shareMsgTemplate = dictionary[currentLang].share_msg;
+    const personalizedMsg = shareMsgTemplate.replace('{name}', name);
+    const text = encodeURIComponent(`${personalizedMsg}\n\n${generatedLinkInput.value}`);
     window.open(`https://wa.me/?text=${text}`, '_blank');
   });
 
