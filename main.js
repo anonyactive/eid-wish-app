@@ -31,6 +31,10 @@ const dictionary = {
 
 let currentLang = 'en';
 
+// History constants (defined at top-level to avoid TDZ issues)
+const HISTORY_KEY = 'eid_link_history';
+const MAX_HISTORY = 20;
+
 document.addEventListener('DOMContentLoaded', () => {
   // Register Service Worker
   if ('serviceWorker' in navigator) {
@@ -259,8 +263,6 @@ function setupGeneratorLogic() {
 }
 
 // ── History Feature ───────────────────────────────────────────
-const HISTORY_KEY = 'eid_link_history';
-const MAX_HISTORY = 20;
 
 function loadHistory() {
   try {
