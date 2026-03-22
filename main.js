@@ -35,6 +35,31 @@ let currentLang = 'en';
 const HISTORY_KEY = 'eid_link_history';
 const MAX_HISTORY = 20;
 
+// ── Firebase Config ────────────────────────────────────────────
+// Paste your Firebase Realtime Database URL below to enable online tracking.
+// Get it from: Firebase Console → Realtime Database → Data tab
+// Example: 'https://your-project-default-rtdb.firebaseio.com'
+const FIREBASE_DB_URL = null; // <-- Replace null with your URL in quotes
+
+async function saveToFirebase(name, from, url) {
+  if (!FIREBASE_DB_URL) return; // Skip if not configured
+  try {
+    await fetch(`${FIREBASE_DB_URL}/wishes.json`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name || '',
+        from: from || '',
+        url,
+        ts: new Date().toISOString(),
+        local_time: new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' })
+      })
+    });
+  } catch (e) {
+    // Fail silently — app works fine without Firebase
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Register Service Worker
   if ('serviceWorker' in navigator) {
@@ -278,6 +303,8 @@ function saveToHistory(name, from, url) {
   if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY);
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
   renderHistory();
+  // Also save online so the creator can see all generated wishes
+  saveToFirebase(name, from, url);
 }
 
 function renderHistory() {
