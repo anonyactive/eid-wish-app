@@ -445,3 +445,112 @@ button:active {
   50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(247, 209, 101, 0.8); }
   100% { transform: scale(1); box-shadow: 0 0 20px rgba(247, 209, 101, 0.5); }
 }
+
+/* Link History Section */
+.history-section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.2rem 1.5rem;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.history-title {
+  font-family: var(--font-heading);
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.clear-history-btn {
+  width: auto;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-muted);
+  border: 1px solid var(--card-border);
+  font-weight: 400;
+}
+
+.clear-history-btn:hover {
+  background: rgba(255,60,60,0.2);
+  color: #ff6b6b;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.history-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.history-item:hover {
+  background: rgba(247, 209, 101, 0.08);
+  border-color: rgba(247, 209, 101, 0.3);
+}
+
+.history-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-item-names {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-item-link {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.15rem;
+}
+
+.history-item-copy {
+  width: auto;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-main);
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.history-item-copy:hover {
+  background: var(--secondary-color);
+  color: #000;
+  transform: translateY(0);
+  box-shadow: none;
+}
+

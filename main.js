@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupGeneratorLogic();
   setupLangToggle();
+  setupClearHistory();
+  renderHistory();
   createSparkles();
 
   if (decodedName || decodedFrom) {
@@ -226,6 +228,8 @@ function setupGeneratorLogic() {
     generatedLinkInput.value = fullLink;
     shareBox.classList.remove('hidden');
     shareBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Save to history
+    saveToHistory(name, from, fullLink);
   });
 
   const handleEnter = (e) => {
@@ -252,6 +256,94 @@ function setupGeneratorLogic() {
       toast.classList.add('hidden');
     }, 3000);
   }
+}
+
+// ── History Feature ───────────────────────────────────────────
+const HISTORY_KEY = 'eid_link_history';
+const MAX_HISTORY = 20;
+
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+  } catch { return []; }
+}
+
+function saveToHistory(name, from, url) {
+  let history = loadHistory();
+  // Remove duplicate by URL
+  history = history.filter(h => h.url !== url);
+  history.unshift({ name, from, url, ts: Date.now() });
+  if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const section = document.getElementById('history-section');
+  const list = document.getElementById('history-list');
+  const history = loadHistory();
+
+  if (!history.length) {
+    section.classList.add('hidden');
+    return;
+  }
+
+  section.classList.remove('hidden');
+  list.innerHTML = '';
+
+  history.forEach(entry => {
+    const li = document.createElement('li');
+    li.className = 'history-item';
+
+    const namesText = entry.from
+      ? `For: ${entry.name || '—'} · From: ${entry.from}`
+      : `For: ${entry.name || '—'}`;
+
+    li.innerHTML = `
+      <div class="history-item-info">
+        <div class="history-item-names">${namesText}</div>
+        <div class="history-item-link">${entry.url}</div>
+      </div>
+      <button class="history-item-copy" title="Copy link">Copy</button>
+    `;
+
+    // Click the row → prefill inputs
+    li.querySelector('.history-item-info').addEventListener('click', () => {
+      document.getElementById('name-input').value = entry.name || '';
+      document.getElementById('from-input').value = entry.from || '';
+      updateCardPreview(entry.name || '', entry.from || '');
+      document.getElementById('generated-link').value = entry.url;
+      document.getElementById('share-box').classList.remove('hidden');
+      document.getElementById('share-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // Copy button
+    li.querySelector('.history-item-copy').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(entry.url);
+      } catch {
+        const tmp = document.createElement('textarea');
+        tmp.value = entry.url;
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand('copy');
+        document.body.removeChild(tmp);
+      }
+      const btn = e.currentTarget;
+      btn.textContent = '✓';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    });
+
+    list.appendChild(li);
+  });
+}
+
+function setupClearHistory() {
+  document.getElementById('clear-history-btn').addEventListener('click', () => {
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+  });
 }
 
 function createSparkles() {
