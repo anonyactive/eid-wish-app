@@ -102,6 +102,47 @@
 
   <div id="toast" class="toast hidden">Copied to clipboard!</div>
 
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel hidden">
+      <div class="admin-content">
+        <div class="admin-header">
+          <h2>🔒 Admin Mode</h2>
+          <button id="close-admin-btn" class="close-btn" title="Close admin panel">&times;</button>
+        </div>
+        
+        <div id="admin-login" class="admin-login">
+          <p>Please enter the admin password to view all generated wishes.</p>
+          <div class="input-group" style="margin-top: 1rem;">
+            <input type="password" id="admin-password" placeholder="Password" autocomplete="off" />
+            <button id="admin-login-btn">Login</button>
+          </div>
+          <p id="admin-error" class="error-text hidden" style="color: #ff4d4d; margin-top: 0.5rem; font-size: 0.9rem;">Incorrect password!</p>
+        </div>
+
+        <div id="admin-dashboard" class="admin-dashboard hidden">
+          <div class="admin-actions" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+            <button id="refresh-data-btn" class="admin-btn-secondary">🔄 Refresh</button>
+            <button id="export-csv-btn" class="admin-btn-primary">📥 Export CSV</button>
+          </div>
+          <div class="admin-table-container">
+            <table id="admin-table">
+              <thead>
+                <tr>
+                  <th>Date (PKT)</th>
+                  <th>For</th>
+                  <th>From</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body">
+                <!-- Data injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <script src="main.js"></script>
 </body>
 </html>

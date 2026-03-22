@@ -41,6 +41,9 @@ const MAX_HISTORY = 20;
 // Example: 'https://your-project-default-rtdb.firebaseio.com'
 const FIREBASE_DB_URL = 'https://eidwishap-default-rtdb.firebaseio.com';
 
+// ── Admin Config ─────────────────────────────────────────────
+const ADMIN_PASSWORD = 'admin123'; // Secret password for admin access
+
 async function saveToFirebase(name, from, url) {
   if (!FIREBASE_DB_URL) return; // Skip if not configured
   try {
@@ -92,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupLangToggle();
   setupClearHistory();
   renderHistory();
+  setupAdminMode();
   createSparkles();
 
   if (decodedName || decodedFrom) {
@@ -483,5 +487,110 @@ function createCelebration() {
     setTimeout(() => {
       if (el.parentNode) el.remove();
     }, (duration + delay) * 1000 + 500);
+  }
+}
+
+// ── Admin Mode Logic ──────────────────────────────────────────
+function setupAdminMode() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') !== 'true') return;
+
+  const adminPanel = document.getElementById('admin-panel');
+  const closeBtn = document.getElementById('close-admin-btn');
+  const passwordInput = document.getElementById('admin-password');
+  const loginBtn = document.getElementById('admin-login-btn');
+  const adminError = document.getElementById('admin-error');
+  const adminLogin = document.getElementById('admin-login');
+  const adminDashboard = document.getElementById('admin-dashboard');
+  const refreshBtn = document.getElementById('refresh-data-btn');
+  const exportBtn = document.getElementById('export-csv-btn');
+  const tableBody = document.getElementById('admin-table-body');
+
+  adminPanel.classList.remove('hidden');
+
+  const performLogin = () => {
+    if (passwordInput.value === ADMIN_PASSWORD) {
+      adminLogin.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      fetchAdminData();
+    } else {
+      adminError.classList.remove('hidden');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  };
+
+  loginBtn.addEventListener('click', performLogin);
+  passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performLogin(); });
+
+  closeBtn.addEventListener('click', () => {
+    adminPanel.classList.add('hidden');
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, '', newUrl);
+  });
+
+  refreshBtn.addEventListener('click', fetchAdminData);
+  exportBtn.addEventListener('click', () => exportToCSV());
+
+  async function fetchAdminData() {
+    if (!FIREBASE_DB_URL) {
+      tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Firebase URL not configured</td></tr>';
+      return;
+    }
+
+    refreshBtn.disabled = true;
+    tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">Fetching data...</td></tr>';
+    
+    try {
+      const resp = await fetch(`${FIREBASE_DB_URL}/wishes.json`);
+      const data = await resp.json();
+      renderAdminTable(data);
+    } catch (e) {
+      tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#ff6b6b; padding: 2rem;">Error fetching data. Check Firebase permissions.</td></tr>';
+    } finally {
+      refreshBtn.disabled = false;
+    }
+  }
+
+  function renderAdminTable(data) {
+    if (!data) {
+      tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">No wishes found yet.</td></tr>';
+      return;
+    }
+
+    const wishes = Object.values(data).sort((a, b) => new Date(b.ts) - new Date(a.ts));
+    tableBody.innerHTML = wishes.map(w => `
+      <tr>
+        <td style="white-space:nowrap;">${w.local_time || new Date(w.ts).toLocaleString()}</td>
+        <td>${w.name || '-'}</td>
+        <td>${w.from || '-'}</td>
+        <td><a href="${w.url}" target="_blank" style="color:var(--secondary-color); text-decoration: underline;">Open</a></td>
+      </tr>
+    `).join('');
+    
+    window._adminData = wishes;
+  }
+
+  function exportToCSV() {
+    if (!window._adminData || !window._adminData.length) return;
+    
+    const headers = ['Date', 'Recipient', 'Sender', 'Link'];
+    const rows = window._adminData.map(w => [
+      w.local_time || new Date(w.ts).toLocaleString(),
+      w.name || '',
+      w.from || '',
+      w.url
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `eid_wishes_export_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
   }
 }

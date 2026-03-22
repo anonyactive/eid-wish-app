@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eid-wish-v4';
+const CACHE_NAME = 'eid-wish-v5';
 const ASSETS = [
   './',
   './index.html',
