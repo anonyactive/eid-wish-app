@@ -39,7 +39,7 @@ const MAX_HISTORY = 20;
 // Paste your Firebase Realtime Database URL below to enable online tracking.
 // Get it from: Firebase Console → Realtime Database → Data tab
 // Example: 'https://your-project-default-rtdb.firebaseio.com'
-const FIREBASE_DB_URL = null; // <-- Replace null with your URL in quotes
+const FIREBASE_DB_URL = 'https://eidwishap-default-rtdb.firebaseio.com';
 
 async function saveToFirebase(name, from, url) {
   if (!FIREBASE_DB_URL) return; // Skip if not configured
