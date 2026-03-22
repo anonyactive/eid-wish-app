@@ -42,7 +42,7 @@ const MAX_HISTORY = 20;
 const FIREBASE_DB_URL = 'https://eidwishap-default-rtdb.firebaseio.com';
 
 // ── Admin Config ─────────────────────────────────────────────
-const ADMIN_PASSWORD = 'admin123'; // Secret password for admin access
+const ADMIN_PASSWORD = 'Eid@D6-Admin!2026'; // Secret password for admin access
 
 async function saveToFirebase(name, from, url) {
   if (!FIREBASE_DB_URL) return; // Skip if not configured
