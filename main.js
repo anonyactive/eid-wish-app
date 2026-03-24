@@ -106,6 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
       overlay.classList.add('hidden-overlay');
       setTimeout(() => overlay.remove(), 800);
       createCelebration();
+      
+      const audio = document.getElementById('bg-audio');
+      if (audio) {
+        audio.play().catch(e => console.error("Audio play failed:", e));
+      }
     });
   }
 });
@@ -175,7 +180,7 @@ function updateCardPreview(name, fromName) {
 
   if (ogTitle) ogTitle.setAttribute('content', document.title);
 
-  const desc = fromName 
+  const desc = fromName
     ? `A special Eid greeting from ${fromName} for ${displayFriend}!`
     : `A special Eid greeting for ${displayFriend}!`;
 
@@ -540,7 +545,7 @@ function setupAdminMode() {
 
     refreshBtn.disabled = true;
     tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">Fetching data...</td></tr>';
-    
+
     try {
       const resp = await fetch(`${FIREBASE_DB_URL}/wishes.json`);
       const data = await resp.json();
@@ -567,13 +572,13 @@ function setupAdminMode() {
         <td><a href="${w.url}" target="_blank" style="color:var(--secondary-color); text-decoration: underline;">Open</a></td>
       </tr>
     `).join('');
-    
+
     window._adminData = wishes;
   }
 
   function exportToCSV() {
     if (!window._adminData || !window._adminData.length) return;
-    
+
     const headers = ['Date', 'Recipient', 'Sender', 'Link'];
     const rows = window._adminData.map(w => [
       w.local_time || new Date(w.ts).toLocaleString(),
